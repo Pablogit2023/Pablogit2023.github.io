@@ -4,37 +4,43 @@
 <head>
     <meta charset="utf-8" />
     <title>Servidor?</title>
+    <!--<script scr="./Servidor.js"></script>-->
 </head>
 <body>
-    <!--<script src="Server.js"></script>-->
     <script>
         let d = new Date();
         document.body.innerHTML = "<h3>Time right now is:  " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()
         "</h3>"
     </script>
-    <!--<script>
-        alert('Hello, World Estrada Web Group!');
-    </script>-->
-
-    <!--<form>
-
-        <p>Enter an email address:</p>
-        <input id='email'>
-        <button onclick="validate()" type='submit' id='validate'>Validate!</button>
-
-    </form>-->
-    <p>
-        <input name="enviar" id="enviar" value="Enviar" type="submit" onclick="miFuncion()">
-        <input name="Nombre" id="Nombre" type="text">
-    </p>
-   
-    <button name="Funcion" id="Funcion" onclick="miFuncion()">Haz clic aquí</button>
+    <input type="text" name="ingre1" id="ingre1" />
+    <input type="text" name="ingre2" id="ingre2" />
+    <button name="boton1" id="boton1" onclick="lafuncion1()">Ingreso1</button>
+    <button name="boton2" id="boton2" onclick="lafuncion2()">Ingreso2</button>
+    <script src="index.js"></script>
     <script>
-        function miFuncion() {
-            alert("Hola mundo");
+        function lafuncion1() {
+            document.getElementById("ingre2").value = "ver";
+            //const boton1 = document.querySelector("boton1");
+            //const dato1 = document.querySelector('ingre1');
+            //let texto1;
+
+            //dato1.addEventListener("change", (e) => {
+            //    boton1.click();
+            //})
         }
     </script>
-    
+    <!--<script>
+        function lafuncion2() {
+            /*document.getElementById("ingre1").value = "ver";*/
+            const boton1 = document.getElementById("boton1");
+            const dato1 = document.getElementById('ingre1');
 
+            let texto1;
+
+            dato1.addEventListener("change", (e) => {
+                boton1.click();
+            })
+        }
+    </script>-->
 </body>
 </html>
