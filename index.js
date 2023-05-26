@@ -4,7 +4,7 @@ const dato1 = document.getElementById('ingre1');
 const dato2 = document.getElementById('ingre2');
 let texto1;
 
-dato1.addEventListener("change", (e) => {
-    /*boton2.click();*/
-    dato2.value = "ver2";
-})
+dato1.addEventListener("change", function() {
+        dato2.value = dato1.value;
+        /*boton2.click();*/
+    })
