@@ -7,7 +7,4 @@
     <CleanCommand>
     </CleanCommand>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="cliente\" />
-  </ItemGroup>
 </Project>

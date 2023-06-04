@@ -22,7 +22,7 @@ io.on('connection', (socket) => {
 
 app.get('/', (req, res) => {
     //res.send('<hi>Aplicacion de Chat</hi>')
-    res.sendFile(`${__dirname}/cliente/index.html`)
+    res.sendFile(`${__dirname}/index.html`)
 });
 
 server.listen(3000, () => {
