@@ -1,0 +1,2 @@
+C:\Users\Segemar\source\repos\NodeConsoleApp1\obj\Debug\NodeConsoleApp1.esproj.SuggestedBindingRedirects.cache
+C:\Users\Segemar\source\repos\NodeConsoleApp1\obj\Debug\NodeConsoleApp1.esproj.CoreCompileInputs.cache
