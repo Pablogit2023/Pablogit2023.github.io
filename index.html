@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Serchat</title>
+</head>
+<body>
+    <h1>App con Node</h1>
+    <script>
+        let d = new Date();
+        document.body.innerHTML = "<h3>Time right now is:  " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()
+        "</h3>";
+    </script>
+
+    <ul class="list-group" id="listado"></ul>
+    <form action="">
+        <input type="text" id="entrada" class="form-control" placeholder="Ingrese el mensaje" />
+        <button type="submit" id="boton" class="btn-primary">Enviar</button>
+    </form>
+    <!--<script src="app.js"></script>-->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let socket = io();
+        const form = document.querySelector('form');
+        const input = document.querySelector('input');
+        let mensajes = document.querySelector('ul');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (input.value) {
+                socket.emit('chat', input.value);
+                input.value = '';
+            };
+        });
+        socket.on('chat', function (msg) {
+            let item = document.createElement('li');
+            item.textContent = msg;
+            mensajes.appendChild(item);
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+    </script>
+</body>
+</html>
