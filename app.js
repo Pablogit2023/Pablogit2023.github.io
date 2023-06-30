@@ -1,3 +1,4 @@
+const { CONNREFUSED } = require('dns');
 const express = require('express');
 const app = express();
 
@@ -11,6 +12,10 @@ const io = new Server(server);
 
 var conectados = 0;
 var maximo = 12;
+var nombres = [];
+var sumador = [];
+sumador.push(0);
+var s = 0
 
 io.on('connection', (socket) => {
     conectados += 1;
@@ -28,7 +33,10 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         conectados -= 1;
         if (conectados < 1) {
-            maximo = 12
+            maximo = 12;
+            sumador = [];
+            nombres = [];
+            sumador.push(0);
         };
         console.log(`Ususario desconectado: ${socket.id}, total: ${conectados}`);
         io.emit('chat', 'INCO' + conectados + 'NECTADO');
@@ -48,6 +56,29 @@ io.on('connection', (socket) => {
         if (msg.includes('MAXIMO')) {
             quitar = msg.split(' ');
             maximo = quitar[1];
+        };
+        if (msg.includes('$&&$')) {
+            antesnombre = msg.indexOf('$&&$');
+            despuesnombre = msg.indexOf('&$$&');
+            nuevonombre = msg.slice(antesnombre + 4, despuesnombre);
+            if (nombres.length > 0) {
+                for (var i = 0; i < nombres.length; i++) {
+                    if (nuevonombre == nombres[i]) {
+                        sumador[i]++;
+                        nuevonombre = nuevonombre + '-' + sumador[i];
+                        socket.emit('chat', 'CAMBIAR' + nuevonombre + 'BIARCAM')
+                    } else
+                        sumador.push(0);
+                };
+            };
+            nombres.push(nuevonombre);
+            console.log(nombres);
+        };
+        if (msg.includes('GANADOR')) {
+            nombres = [];
+            sumador = [];
+            sumador.push(0);
+            maximo = 12;
         };
         if (conectados < maximo + 1) {
             socket.broadcast.emit('chat', msg)
