@@ -15,7 +15,7 @@ var maximo = 12;
 var nombres = [];
 var sumador = [];
 sumador.push(0);
-var s = 0
+listos = 0;
 
 io.on('connection', (socket) => {
     conectados += 1;
@@ -37,30 +37,30 @@ io.on('connection', (socket) => {
             sumador = [];
             nombres = [];
             sumador.push(0);
+            listos = 0;
         };
         console.log(`Ususario desconectado: ${socket.id}, total: ${conectados}`);
         io.emit('chat', 'INCO' + conectados + 'NECTADO');
     });
-    //socket.on('create', function (room) {
-    //    socket.join(room);
-    //});
-    //socket.on('join', (room) => {
-    //    console.log(`Socket ${socket.id} joining ${room}`);
-    //    socket.join(room);
-    //});
-    /*socket.join('some room')*/
-    //socket.on('chat', (msg) => {
-    //    console.log('Mensaje: ' + msg)
-    //});
+
     socket.on('chat', (msg) => {
         if (msg.includes('MAXIMO')) {
-            quitar = msg.split(' ');
+            let quitar = msg.split(' ');
             maximo = quitar[1];
+            listos = 0;
+        };
+        if (msg.includes('LISTOSI')) {
+            listos++;
+            io.emit('chat', 'LISTADOS' + listos + 'CALISTO');
+        };
+        if (msg.includes('LISTONO') && listos > 0) {
+            listos--;
+            io.emit('chat', 'LISTADOS' + listos + 'CALISTO');
         };
         if (msg.includes('$&&$')) {
-            antesnombre = msg.indexOf('$&&$');
-            despuesnombre = msg.indexOf('&$$&');
-            nuevonombre = msg.slice(antesnombre + 4, despuesnombre);
+            let antesnombre = msg.indexOf('$&&$');
+            let despuesnombre = msg.indexOf('&$$&');
+            let nuevonombre = msg.slice(antesnombre + 4, despuesnombre);
             if (nombres.length > 0) {
                 for (var i = 0; i < nombres.length; i++) {
                     if (nuevonombre == nombres[i]) {
