@@ -111,7 +111,7 @@ io.on('connection', (socket) => {
                     if (nuevonombre == nombres[numaula][i]) {
                         sumador[numaula][i]++;
                         nuevonombre = nuevonombre + '-' + sumador[numaula][i];
-                        socket.emit('chat', 'CAMBIAR' + nuevonombre + 'BIARCAM')
+                        socket.emit('chat', 'CAMBIAR' + nuevonombre + 'BIARCAM');
                     } else
                         sumador[numaula].push(0);
                 };
