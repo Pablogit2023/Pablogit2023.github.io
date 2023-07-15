@@ -44,7 +44,7 @@ io.on('connection', (socket) => {
 
     if (conectados[numaula] < maximo[numaula] + 1) {
         if (conectados[numaula] < 2) {
-            socket.emit('chat', 'bienvenido, primer jugador')
+            socket.emit('chat', 'bienvenido, primer jugador');
         } else
             socket.emit('chat', 'bienvenido, hay ' + conectados[numaula] + ' jugadores conectados');
         io.in(nombreaula).emit('chat', 'AGRE' + conectados[numaula] + 'GADOS');
@@ -208,9 +208,9 @@ io.on('connection', (socket) => {
 app.get('/', (req, res) => {
     if (conectados[0] < maximo[0] && libres[0] == true) {
         res.sendFile(`${__dirname}/index0.html`);
-    } else if (conectados[1] < maximo[1] && libres[1] == true)
+    } else if (conectados[1] < maximo[1] && libres[1] == true) {
         res.sendFile(`${__dirname}/index1.html`);
-    else if (conectados[2] < maximo[2] && libres[2] == true) {
+    } else if (conectados[2] < maximo[2] && libres[2] == true) {
         res.sendFile(`${__dirname}/index2.html`);
     } else if (conectados[3] < maximo[3] && libres[3] == true) {
         res.sendFile(`${__dirname}/index3.html`);
