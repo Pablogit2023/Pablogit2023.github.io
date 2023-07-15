@@ -206,26 +206,24 @@ io.on('connection', (socket) => {
 });
 
 app.get('/', (req, res) => {
-    //res.send('<hi>Aplicacion de Chat</hi>')
     if (conectados[0] < maximo[0] && libres[0] == true) {
-        res.sendFile(`${__dirname}/index0.html`)
-    } else if (conectados[1] < maximo[1] && libres[1] == true) 
-        res.sendFile(`${__dirname}/index1.html`)
-    /*res.send('<hi id="completo">SALON COMPLETO</hi>') */
-    else if (conectados[2] < maximo[2] && libres[2] == true) { 
-        res.sendFile(`${__dirname}/index2.html`)
+        res.sendFile(`${__dirname}/index0.html`);
+    } else if (conectados[1] < maximo[1] && libres[1] == true)
+        res.sendFile(`${__dirname}/index1.html`);
+    else if (conectados[2] < maximo[2] && libres[2] == true) {
+        res.sendFile(`${__dirname}/index2.html`);
     } else if (conectados[3] < maximo[3] && libres[3] == true) {
-        res.sendFile(`${__dirname}/index3.html`)
+        res.sendFile(`${__dirname}/index3.html`);
     } else if (conectados[4] < maximo[4] && libres[4] == true) {
-        res.sendFile(`${__dirname}/index4.html`)
+        res.sendFile(`${__dirname}/index4.html`);
     } else if (conectados[5] < maximo[5] && libres[5] == true) {
-        res.sendFile(`${__dirname}/index5.html`)
-    } else 
-        res.send('<h2 id="aula">SALONES COMPLETOS</h2>') 
+        res.sendFile(`${__dirname}/index5.html`);
+    } else
+        res.send('<h2 id="aula">SALONES COMPLETOS</h2>'); 
 });
 
 server.listen(3000, () => {
-    console.log('Servidor corriendo en http://localhost:3000')
+    console.log('Servidor corriendo en http://localhost:3000');
 
 });
 
