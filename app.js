@@ -74,6 +74,9 @@ io.on('connection', (socket) => {
                                 libres[s] = true
                         };
                     };
+                    for (c = 0; c < conectados.length; c++) {
+                            if (conectados[c] < 1) { nombres[c] = [] };
+                    };
                 };
             };
         };
