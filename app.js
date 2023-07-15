@@ -208,7 +208,7 @@ io.on('connection', (socket) => {
 app.get('/', (req, res) => {
     //res.send('<hi>Aplicacion de Chat</hi>')
     if (conectados[0] < maximo[0] && libres[0] == true) {
-        res.sendFile(`${__dirname}/index.html`)
+        res.sendFile(`${__dirname}/index0.html`)
     } else if (conectados[1] < maximo[1] && libres[1] == true) 
         res.sendFile(`${__dirname}/index1.html`)
     /*res.send('<hi id="completo">SALON COMPLETO</hi>') */
