@@ -40,41 +40,44 @@ io.on('connection', (socket) => {
     conectados[numaula] += 1;
     soquetes[numaula].push(socket.id);
     
-    console.log(`Un usuario se ha conectado: ${socket.id}, total: ${conectados}` + nombreaula);
+    console.log(`Un usuario se ha conectado: ${socket.id}, total: ${conectados} y nombreaula: ${numaula}`);
 
     if (conectados[numaula] < maximo[numaula] + 1) {
         if (conectados[numaula] < 2) {
             socket.emit('chat', 'bienvenido, primer jugador');
-        } else
+        } else {
             socket.emit('chat', 'bienvenido, hay ' + conectados[numaula] + ' jugadores conectados');
-        io.in(nombreaula).emit('chat', 'AGRE' + conectados[numaula] + 'GADOS');
-    } else
+            io.in(nombreaula).emit('chat', 'AGRE' + conectados[numaula] + 'GADOS');
+        };
+    } else { 
         socket.emit('chat', 'completo');
+    };
 
     socket.on('disconnect', () => {
-        for (s = 0; s < soquetes.length; s++) {
+        for ( var s = 0; s < soquetes.length; s++) {
             for (i = 0; i < soquetes[s].length; i++) {
                 if (soquetes[s][i] == socket.id) {
                     soquetes[s].splice(i, 1);
-                    console.log(`${s}__${i}`);
+                    console.log(`soquetes s: ${s} y soquetes i: ${i}`);
                     nombres[s].splice(i, 1);
                     conectados[s]--;
                     if (libres[s] == false) { maximo[s]-- };
-                    console.log(libres[s] + '--' + maximo[s]);
+                    console.log('libres s: ' + libres[s] + ' y maximos s: ' + maximo[s]);
                     if (listos[s] > 0) { listos[s]-- };
                     if (conectados[s] < 1) {
                         nombres[s] = [];
                         sumador[s] = [];
                         sumador[s].push(0);
                         maximo[s] = 12;
-                        for (l = 0; l < libres.length; l++) {
+                        for ( var l = 0; l < libres.length; l++) {
                             if (libres[l] == true && conectados[l] > 0) {
-                                libres[s] = false
-                            } else
-                                libres[s] = true
+                                libres[s] = false;
+                            } else { 
+                                libres[s] = true;
+                            };
                         };
                     };
-                    for (c = 0; c < conectados.length; c++) {
+                    for ( var c = 0; c < conectados.length; c++) {
                             if (conectados[c] < 1) { nombres[c] = [] };
                     };
                 };
@@ -82,8 +85,8 @@ io.on('connection', (socket) => {
         };
 
         console.log(`Ususario desconectado: ${socket.id}, total: ${conectados}`);
-        console.log(libres);
-        console.log(listos);
+        console.log('libres: ' + libres);
+        console.log('listos: ' + listos);
         console.log(nombres);
         io.in(adondereenvio).emit('chat', 'INCO' + conectados[numaula] + 'NECTADO');
     });
@@ -94,12 +97,12 @@ io.on('connection', (socket) => {
             adondereenvio = msg.slice(veraula);
             numaula = msg.slice(veraula + 4);
             msg = msg.slice(0, veraula);
-            console.log(adondereenvio + '--' + msg);
+            console.log('a donde reenvio: ' + adondereenvio + ' y mensage: ' + msg);
         };
         if (msg.includes('LISTOSI')) {
             listos[numaula]++;
             io.in(adondereenvio).emit('chat', 'LISTADOS' + listos[numaula] + 'CALISTO');
-            console.log(listos[numaula] + '--' + numaula);
+            console.log('listos numaula: ' + listos[numaula] + ' y numaula: ' + numaula);
         };
         if (msg.includes('LISTONO') && listos[numaula] > 0) {
             listos[numaula]--;
@@ -139,29 +142,30 @@ io.on('connection', (socket) => {
             sumador[numaula] = [];
             sumador[numaula].push(0);
             maximo[numaula] = 12;
-            console.log('antes' + nombreaula);
-            for (l = 0; l < libres.length; l++) {
-                if (libres[l] == true && conectados[l] > 0) {
+            console.log('aula antes: ' + nombreaula);
+            for ( var lu = 0; lu < libres.length; lu++) {
+                if (libres[lu] == true && conectados[lu] > 0) {
                     libres[numaula] = false
-                } else
+                } else { 
                     libres[numaula] = true
+                };
             };
-            for (var l = 0; l < libres.length; l++) {
-                if (libres[l] == true) {
-                    nombreaula = 'aula' + l;
-                    l = libres.length;
-                }
+            for (var li = 0; li < libres.length; li++) {
+                if (libres[li] == true) {
+                    nombreaula = 'aula' + li;
+                    li = libres.length;
+                };
             };
-            console.log('después' + nombreaula);
-            console.log('maximo' + numaula + ' = ' + maximo[numaula]);
+            console.log('aula despues: ' + nombreaula);
+            console.log('maximo: ' + numaula + ' = ' + maximo[numaula]);
         };
 
         if (msg.includes('MAXIMO')) {
             let quitar = msg.split(' ');
             maximo[numaula] = parseInt(quitar[1]);
-            console.log(maximo);
+            console.log('los maximos: ' + maximo);
             listos[numaula] = 0;
-            console.log(numaula);
+            console.log('numero aula:' + numaula);
             libres[numaula] = false;
             if (conectados[numaula + 1] == null) { numaula++ };
             if (conectados[numaula] == null) { conectados.push(0) };
@@ -172,24 +176,24 @@ io.on('connection', (socket) => {
             if (sumador[numaula][0] == null) { sumador[numaula].push(0) };
             if (libres[numaula] == null) { libres.push(true) };
             if (soquetes[numaula] == null) { soquetes.push([]) };
-            console.log(libres);
-            for (var l = 0; l < libres.length; l++) {
-                if (libres[l] == false && conectados[l] < 1) {
-                    libres[l] = true
+            console.log('libres: ' + libres);
+            for (var la = 0; la < libres.length; la++) {
+                if (libres[la] == false && conectados[la] < 1) {
+                    libres[la] = true;
                 };
             };
-            for (var l = 0; l < libres.length; l++) {
-                if (libres[l] == false && conectados[l] > 0 && nombres[l].length < 1) {
-                    libres[l] = true
+            for (var le = 0; le < libres.length; le++) {
+                if (libres[le] == false && conectados[le] > 0 && nombres[le].length < 1) {
+                    libres[le] = true;
                 };
             };
-            for (var l = 0; l < libres.length; l++) {
-                if (libres[l] == true) {
-                    nombreaula = 'aula' + l;
-                    l = libres.length;
-                } 
+            for (var lo = 0; lo < libres.length; lo++) {
+                if (libres[lo] == true) {
+                    nombreaula = 'aula' + lo;
+                    lo = libres.length;
+                }; 
             };
-            console.log(soquetes);
+            console.log('soquetes' + soquetes);
         };
 
     });
@@ -221,8 +225,9 @@ app.get('/', (req, res) => {
         res.sendFile(`${__dirname}/index4.html`);
     } else if (conectados[5] < maximo[5] && libres[5] == true) {
         res.sendFile(`${__dirname}/index5.html`);
-    } else
-        res.send('<h2 id="aula">SALONES COMPLETOS</h2>'); 
+    } else { 
+        res.send('<h2 id="aula">SALONES COMPLETOS</h2>');
+    };
 });
 
 server.listen(3000, () => {
