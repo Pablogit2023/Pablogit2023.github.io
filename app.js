@@ -54,7 +54,7 @@ io.on('connection', (socket) => {
     };
 
     socket.on('disconnect', () => {
-        for ( var s = 0; s < soquetes.length; s++) {
+        for (var s = 0; s < soquetes.length; s++) {
             for (i = 0; i < soquetes[s].length; i++) {
                 if (soquetes[s][i] == socket.id) {
                     soquetes[s].splice(i, 1);
@@ -69,7 +69,7 @@ io.on('connection', (socket) => {
                         sumador[s] = [];
                         sumador[s].push(0);
                         maximo[s] = 12;
-                        for ( var l = 0; l < libres.length; l++) {
+                        for (var l = 0; l < libres.length; l++) {
                             if (libres[l] == true && conectados[l] > 0) {
                                 libres[s] = false;
                             } else { 
@@ -77,8 +77,8 @@ io.on('connection', (socket) => {
                             };
                         };
                     };
-                    for ( var c = 0; c < conectados.length; c++) {
-                            if (conectados[c] < 1) { nombres[c] = [] };
+                    for (var c = 0; c < conectados.length; c++) {
+                            if (conectados[c] == 0) { nombres[c] = [] };
                     };
                 };
             };
@@ -143,7 +143,7 @@ io.on('connection', (socket) => {
             sumador[numaula].push(0);
             maximo[numaula] = 12;
             console.log('aula antes: ' + nombreaula);
-            for ( var lu = 0; lu < libres.length; lu++) {
+            for (var lu = 0; lu < libres.length; lu++) {
                 if (libres[lu] == true && conectados[lu] > 0) {
                     libres[numaula] = false
                 } else { 
