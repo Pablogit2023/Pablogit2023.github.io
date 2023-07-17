@@ -45,6 +45,7 @@ io.on('connection', (socket) => {
     if (conectados[numaula] < maximo[numaula] + 1) {
         if (conectados[numaula] < 2) {
             socket.emit('chat', 'bienvenido, primer jugador');
+            io.in(nombreaula).emit('chat', 'AGRE' + conectados[numaula] + 'GADOS');
         } else {
             socket.emit('chat', 'bienvenido, hay ' + conectados[numaula] + ' jugadores conectados');
             io.in(nombreaula).emit('chat', 'AGRE' + conectados[numaula] + 'GADOS');
@@ -58,11 +59,13 @@ io.on('connection', (socket) => {
             for (i = 0; i < soquetes[s].length; i++) {
                 if (soquetes[s][i] == socket.id) {
                     soquetes[s].splice(i, 1);
-                    console.log(`soquetes s: ${s} y soquetes i: ${i}`);
+                    console.log(`soquetes[s]: ${s} y soquetes[i]: ${i}`);
                     nombres[s].splice(i, 1);
+                    console.log('splice del disconnect');
+                    console.log(nombres);
                     conectados[s]--;
                     if (libres[s] == false) { maximo[s]-- };
-                    console.log('libres s: ' + libres[s] + ' y maximos s: ' + maximo[s]);
+                    console.log('libres[s]: ' + libres[s] + ' y maximo[s]: ' + maximo[s]);
                     if (listos[s] > 0) { listos[s]-- };
                     if (conectados[s] < 1) {
                         nombres[s] = [];
@@ -78,16 +81,21 @@ io.on('connection', (socket) => {
                         };
                     };
                     for (var c = 0; c < conectados.length; c++) {
-                            if (conectados[c] == 0) { nombres[c] = [] };
+                        if (conectados[c] == 0) {
+                            nombres[c] = [];
+                            console.log(`se borro nombres[c], [c]= ${c}, ${nombres}`);
+                            console.log(nombres);
+                        };
                     };
                 };
             };
         };
 
         console.log(`Ususario desconectado: ${socket.id}, total: ${conectados}`);
+        console.log(` todos los soquetes: ${soquetes}`);
         console.log('libres: ' + libres);
         console.log('listos: ' + listos);
-        console.log(nombres);
+        console.log('nombres: ' + nombres + ' y conectados: ' + conectados);
         io.in(adondereenvio).emit('chat', 'INCO' + conectados[numaula] + 'NECTADO');
     });
 
@@ -102,7 +110,7 @@ io.on('connection', (socket) => {
         if (msg.includes('LISTOSI')) {
             listos[numaula]++;
             io.in(adondereenvio).emit('chat', 'LISTADOS' + listos[numaula] + 'CALISTO');
-            console.log('listos numaula: ' + listos[numaula] + ' y numaula: ' + numaula);
+            console.log('listos[numaula]: ' + listos[numaula] + ' y numaula: ' + numaula);
         };
         if (msg.includes('LISTONO') && listos[numaula] > 0) {
             listos[numaula]--;
@@ -139,6 +147,7 @@ io.on('connection', (socket) => {
 
         if (msg.includes('GANADOR')) {
             nombres[numaula] = [];
+            console.log('se borro nombre[~' + numaula + '~] por ganador y quedo: ' + nombres);
             sumador[numaula] = [];
             sumador[numaula].push(0);
             maximo[numaula] = 12;
@@ -193,7 +202,7 @@ io.on('connection', (socket) => {
                     lo = libres.length;
                 }; 
             };
-            console.log('soquetes' + soquetes);
+            console.log('los soquetes: ' + soquetes);
         };
 
     });
