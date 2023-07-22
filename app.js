@@ -100,6 +100,9 @@ io.on('connection', (socket) => {
     });
 
     socket.on('chat', (msg) => {
+        if (msg.includes('DESDESCONCON')) {
+            socket.disconnect(true);
+        };
         if (msg.includes('aula')) {
             let veraula = msg.indexOf('aula');
             adondereenvio = msg.slice(veraula);
@@ -147,7 +150,7 @@ io.on('connection', (socket) => {
 
         if (msg.includes('GANADOR')) {
             nombres[numaula] = [];
-            console.log('se borro nombre[~' + numaula + '~] por ganador y quedo: ' + nombres);
+            console.log('se borraron nombres[~' + numaula + '~] por ganador y quedo: ' + nombres);
             sumador[numaula] = [];
             sumador[numaula].push(0);
             maximo[numaula] = 12;
