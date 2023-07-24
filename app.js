@@ -28,6 +28,7 @@ libres.push(true);
 var soquetes = [];
 soquetes.push([]);
 var lista = '';
+var lista2 = '';
 var adondereenvio;
 
 
@@ -59,19 +60,30 @@ io.on('connection', (socket) => {
             for (i = 0; i < soquetes[s].length; i++) {
                 if (soquetes[s][i] == socket.id) {
                     soquetes[s].splice(i, 1);
+                    let esteaula = 'aula' + s;
                     console.log(`soquetes[s]: ${s} y soquetes[i]: ${i}`);
                     nombres[s].splice(i, 1);
                     console.log('splice del disconnect');
                     console.log(nombres);
+                    lista2 = '';
+                    for (var ni = 0; ni < nombres[s].length; ni++) {
+                        let aumeni = ni + 1;
+                        lista2 = lista2.concat(aumeni + ') ');
+                        lista2 = lista2.concat(nombres[s][ni]);
+                        lista2 = lista2.concat('~  ');
+                        lista2 = lista2.toString();
+                    };
+                    io.in(esteaula).emit('chat', `ESTOS ${lista2} SOMOS`);
                     conectados[s]--;
                     if (libres[s] == false) { maximo[s]-- };
                     console.log('libres[s]: ' + libres[s] + ' y maximo[s]: ' + maximo[s]);
-                    if (listos[s] > 0) { listos[s]-- };
+                    if (listos[s] > 1) { listos[s]-- };
                     if (conectados[s] < 1) {
                         nombres[s] = [];
                         sumador[s] = [];
                         sumador[s].push(0);
                         maximo[s] = 12;
+                        listos[s] = 0;
                         for (var l = 0; l < libres.length; l++) {
                             if (libres[l] == true && conectados[l] > 0) {
                                 libres[s] = false;
@@ -134,9 +146,10 @@ io.on('connection', (socket) => {
                 };
             };
             nombres[numaula].push(nuevonombre);
+            lista = '';
             for (var n = 0; n < nombres[numaula].length; n++) {
                 let aumen = n + 1;
-                lista = lista.concat(aumen + ') ')
+                lista = lista.concat(aumen + ') ');
                 lista = lista.concat(nombres[numaula][n]);
                 lista = lista.concat('~  ');
                 lista = lista.toString();
