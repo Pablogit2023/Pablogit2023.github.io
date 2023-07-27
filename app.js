@@ -67,8 +67,8 @@ io.on('connection', (socket) => {
                     console.log(nombres);
                     lista2 = '';
                     for (var ni = 0; ni < nombres[s].length; ni++) {
-                        let aumeni = ni + 1;
-                        lista2 = lista2.concat(aumeni + ') ');
+                        let siguiente = ni + 1;
+                        lista2 = lista2.concat(siguiente + ') ');
                         lista2 = lista2.concat(nombres[s][ni]);
                         lista2 = lista2.concat('~  ');
                         lista2 = lista2.toString();
