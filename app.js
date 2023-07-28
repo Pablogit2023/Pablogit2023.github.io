@@ -19,7 +19,7 @@ nombres.push([]);
 var sumador = [];
 sumador.push([]);
 sumador[0].push(0);
-listos = [];
+var listos = [];
 listos.push(0);
 var nombreaula = 'aula0';
 var numaula;
