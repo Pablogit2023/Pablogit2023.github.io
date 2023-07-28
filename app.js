@@ -18,7 +18,7 @@ var nombres = [];
 nombres.push([]);
 var sumador = [];
 sumador.push([]);
-sumador[0].push(0);
+sumador[0].push(1);
 var listos = [];
 listos.push(0);
 var nombreaula = 'aula0';
@@ -81,7 +81,7 @@ io.on('connection', (socket) => {
                     if (conectados[s] < 1) {
                         nombres[s] = [];
                         sumador[s] = [];
-                        sumador[s].push(0);
+                        sumador[s].push(1);
                         maximo[s] = 12;
                         listos[s] = 0;
                         for (var l = 0; l < libres.length; l++) {
@@ -139,10 +139,10 @@ io.on('connection', (socket) => {
                 for (var i = 0; i < nombres[numaula].length; i++) {
                     if (nuevonombre == nombres[numaula][i]) {
                         sumador[numaula][i]++;
-                        nuevonombre = nuevonombre + '-' + sumador[numaula][i];
+                        nuevonombre = nuevonombre + '_' + sumador[numaula][i];
                         socket.emit('chat', 'CAMBIAR' + nuevonombre + 'BIARCAM');
                     } else
-                        sumador[numaula].push(0);
+                        sumador[numaula].push(1);
                 };
             };
             nombres[numaula].push(nuevonombre);
@@ -165,7 +165,7 @@ io.on('connection', (socket) => {
             nombres[numaula] = [];
             console.log('se borraron nombres[~' + numaula + '~] por ganador y quedo: ' + nombres);
             sumador[numaula] = [];
-            sumador[numaula].push(0);
+            sumador[numaula].push(1);
             maximo[numaula] = 12;
             console.log('aula antes: ' + nombreaula);
             for (var lu = 0; lu < libres.length; lu++) {
@@ -198,7 +198,7 @@ io.on('connection', (socket) => {
             if (nombres[numaula] == null) { nombres.push([]) };
             if (listos[numaula] == null) { listos.push(0) };
             if (sumador[numaula] == null) { sumador.push([]) };
-            if (sumador[numaula][0] == null) { sumador[numaula].push(0) };
+            if (sumador[numaula][0] == null) { sumador[numaula].push(1) };
             if (libres[numaula] == null) { libres.push(true) };
             if (soquetes[numaula] == null) { soquetes.push([]) };
             console.log('libres: ' + libres);
@@ -230,7 +230,7 @@ io.on('connection', (socket) => {
         if (nombres[proximo] == null) { nombres.push([]) };
         if (listos[proximo] == null) { listos.push(0) };
         if (sumador[proximo] == null) { sumador.push([]) };
-        if (sumador[proximo][0] == null) { sumador[proximo].push(0) };
+        if (sumador[proximo][0] == null) { sumador[proximo].push(1) };
         if (libres[proximo] == null) { libres.push(true) };
         if (soquetes[proximo] == null) { soquetes.push([]) };
         nombreaula = 'aula' + proximo;
