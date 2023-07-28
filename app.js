@@ -22,7 +22,7 @@ sumador[0].push(0);
 var listos = [];
 listos.push(0);
 var nombreaula = 'aula0';
-var numaula;
+var numaula = 0;
 libres = [];
 libres.push(true);
 var soquetes = [];
@@ -36,12 +36,12 @@ var adondereenvio;
 io.on('connection', (socket) => {
     socket.join(nombreaula);
     let indiceaula = nombreaula.indexOf('aula');
-    numaula = nombreaula.slice(indiceaula + 4);
-    numaula = parseInt(numaula);
+    let antesnumaula = nombreaula.slice(indiceaula + 4);
+    numaula = parseInt(antesnumaula);
     conectados[numaula] += 1;
     soquetes[numaula].push(socket.id);
     
-    console.log(`Un usuario se ha conectado: ${socket.id}, total: ${conectados} y nombreaula: ${numaula}`);
+    console.log(`Un usuario se ha conectado: ${socket.id}, total conectados: ${conectados} y nombreaula: aula${numaula}`);
 
     if (conectados[numaula] < maximo[numaula] + 1) {
         if (conectados[numaula] < 2) {
