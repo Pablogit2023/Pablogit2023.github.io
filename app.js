@@ -70,7 +70,7 @@ io.on('connection', (socket) => {
                         let siguiente = ni + 1;
                         lista2 = lista2.concat(siguiente + ') ');
                         lista2 = lista2.concat(nombres[s][ni]);
-                        lista2 = lista2.concat('~  ');
+                        lista2 = lista2.concat('// ');
                         lista2 = lista2.toString();
                     };
                     io.in(esteaula).emit('chat', `ESTOS ${lista2} SOMOS`);
@@ -151,7 +151,7 @@ io.on('connection', (socket) => {
                 let aumen = n + 1;
                 lista = lista.concat(aumen + ') ');
                 lista = lista.concat(nombres[numaula][n]);
-                lista = lista.concat('~  ');
+                lista = lista.concat('// ');
                 lista = lista.toString();
             };
             io.in(adondereenvio).emit('chat', `ESTOS ${lista} SOMOS`);
