@@ -59,12 +59,16 @@ io.on('connection', (socket) => {
         for (var s = 0; s < soquetes.length; s++) {
             for (i = 0; i < soquetes[s].length; i++) {
                 if (soquetes[s][i] == socket.id) {
+                    console.log(`se quitara soquetes[${s}][${i}]: ${soquetes[s][i]}`);
                     soquetes[s].splice(i, 1);
                     let esteaula = 'aula' + s;
-                    console.log(`soquetes[s]: ${s} y soquetes[i]: ${i}`);
+                    console.log(esteaula);
+                    console.log(soquetes[s]);
                     nombres[s].splice(i, 1);
                     console.log('splice del disconnect');
                     console.log(nombres);
+                    conectados[s]--;
+                    io.in(esteaula).emit('chat', 'INCO' + conectados[s] + 'NECTADO');
                     lista2 = '';
                     for (var ni = 0; ni < nombres[s].length; ni++) {
                         let siguiente = ni + 1;
@@ -74,28 +78,36 @@ io.on('connection', (socket) => {
                         lista2 = lista2.toString();
                     };
                     io.in(esteaula).emit('chat', `ESTOS ${lista2} SOMOS`);
-                    conectados[s]--;
+                    
                     if (libres[s] == false) { maximo[s]-- };
-                    console.log('libres[s]: ' + libres[s] + ' y maximo[s]: ' + maximo[s]);
-                    if (listos[s] > 1) { listos[s]-- };
+                    console.log('libres[' + s + ']: ' + libres[s] + ' y maximo[' +  s + ']: ' + maximo[s]);
+                    if (listos[s] > conectados[s]) { listos[s]-- };
                     if (conectados[s] < 1) {
                         nombres[s] = [];
                         sumador[s] = [];
                         sumador[s].push(1);
                         maximo[s] = 12;
                         listos[s] = 0;
+                        libres[s] = true;
                         for (var l = 0; l < libres.length; l++) {
-                            if (libres[l] == true && conectados[l] > 0) {
-                                libres[s] = false;
-                            } else { 
-                                libres[s] = true;
+                            if (libres[l] == true) {
+                                nombreaula = 'aula' + l;
+                                l = libres.length;
                             };
                         };
+                        //for (var l = 0; l < libres.length; l++) {
+                        //    if (libres[l] == true && conectados[l] > 0) {
+                        //        libres[l] = false;
+                        //    } else { 
+                        //        libres[l] = true;
+                        //        nombreaula = 'aula' + l;
+                        //    };
+                        //};
                     };
                     for (var c = 0; c < conectados.length; c++) {
                         if (conectados[c] == 0) {
                             nombres[c] = [];
-                            console.log(`se borro nombres[c], [c]= ${c}, ${nombres}`);
+                            console.log(`se borro nombres[c], [c]= ${c},nombres: ${nombres}`);
                             console.log(nombres);
                         };
                     };
@@ -108,7 +120,7 @@ io.on('connection', (socket) => {
         console.log('libres: ' + libres);
         console.log('listos: ' + listos);
         console.log('nombres: ' + nombres + ' y conectados: ' + conectados);
-        io.in(adondereenvio).emit('chat', 'INCO' + conectados[numaula] + 'NECTADO');
+        
     });
 
     socket.on('chat', (msg) => {
@@ -126,6 +138,17 @@ io.on('connection', (socket) => {
             listos[numaula]++;
             io.in(adondereenvio).emit('chat', 'LISTADOS' + listos[numaula] + 'CALISTO');
             console.log('listos[numaula]: ' + listos[numaula] + ' y numaula: ' + numaula);
+            lista = '';
+            for (var na = 0; na < nombres[numaula].length; na++) {
+                let aumeno = na + 1;
+                lista = lista.concat(aumeno + ') ');
+                lista = lista.concat(nombres[numaula][na]);
+                lista = lista.concat('// ');
+                lista = lista.toString();
+            };
+            io.in(adondereenvio).emit('chat', `ESTOS ${lista} SOMOS`);
+            console.log(nombres);
+            lista = '';
         };
         if (msg.includes('LISTONO') && listos[numaula] > 0) {
             listos[numaula]--;
@@ -162,19 +185,20 @@ io.on('connection', (socket) => {
         socket.broadcast.to(adondereenvio).emit('chat', msg);
 
         if (msg.includes('GANADOR')) {
-            nombres[numaula] = [];
-            console.log('se borraron nombres[~' + numaula + '~] por ganador y quedo: ' + nombres);
-            sumador[numaula] = [];
-            sumador[numaula].push(1);
+            //nombres[numaula] = [];
+            //console.log('se borraron nombres[~' + numaula + '~] por ganador y quedo: ' + nombres);
+            //sumador[numaula] = [];
+            //sumador[numaula].push(1);
             maximo[numaula] = 12;
+            libres[numaula] = true;
             console.log('aula antes: ' + nombreaula);
-            for (var lu = 0; lu < libres.length; lu++) {
-                if (libres[lu] == true && conectados[lu] > 0) {
-                    libres[numaula] = false
-                } else { 
-                    libres[numaula] = true
-                };
-            };
+            //for (var lu = 0; lu < libres.length; lu++) {
+            //    if (libres[lu] == true && conectados[lu] > 0) {
+            //        libres[numaula] = false
+            //    } else { 
+            //        libres[numaula] = true
+            //    };
+            //};
             for (var li = 0; li < libres.length; li++) {
                 if (libres[li] == true) {
                     nombreaula = 'aula' + li;
@@ -182,7 +206,7 @@ io.on('connection', (socket) => {
                 };
             };
             console.log('aula despues: ' + nombreaula);
-            console.log('maximo: ' + numaula + ' = ' + maximo[numaula]);
+            console.log('maximo[' + numaula + '] = ' + maximo[numaula]);
         };
 
         if (msg.includes('MAXIMO')) {
