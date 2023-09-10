@@ -2,3 +2,4 @@ C:\Users\Segemar\source\repos\NodeConsoleApp1\obj\Debug\NodeConsoleApp1.esproj.S
 C:\Users\Segemar\source\repos\NodeConsoleApp1\obj\Debug\NodeConsoleApp1.esproj.CoreCompileInputs.cache
 C:\Users\Ian\source\repos\NodeConsoleApp1\obj\Debug\NodeConsoleApp1.esproj.SuggestedBindingRedirects.cache
 C:\Users\Ian\source\repos\NodeConsoleApp1\obj\Debug\NodeConsoleApp1.esproj.CoreCompileInputs.cache
+C:\Users\Yoprekto\Documents\Visual Studio 2022\NodeConsoleApp1\obj\Debug\NodeConsoleApp1.esproj.CoreCompileInputs.cache

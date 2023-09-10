@@ -7,8 +7,20 @@ const server = http.createServer(app);
 
 const { Server } = require('socket.io');
 const io = new Server(server);
+const fs = require("fs");
 
-/*const mostrar = document.getElementById('cantidad');*/
+var rutaultimo = './recordultimo.txt';
+var rutaprimero = './recordprimero.txt';
+var rutadiferencia = './recorddiferencia.txt';
+var ruta = './record.txt';
+var texto = "Esto es una prueba";
+
+var ultimorecord = [];
+ultimorecord.push('');
+var ultimonombre = [];
+ultimonombre.push([]);
+var ultimopuntos = [];
+ultimopuntos.push([]);
 
 var conectados = [];
 conectados.push(0);
@@ -95,14 +107,6 @@ io.on('connection', (socket) => {
                                 l = libres.length;
                             };
                         };
-                        //for (var l = 0; l < libres.length; l++) {
-                        //    if (libres[l] == true && conectados[l] > 0) {
-                        //        libres[l] = false;
-                        //    } else { 
-                        //        libres[l] = true;
-                        //        nombreaula = 'aula' + l;
-                        //    };
-                        //};
                     };
                     for (var c = 0; c < conectados.length; c++) {
                         if (conectados[c] == 0) {
@@ -181,33 +185,113 @@ io.on('connection', (socket) => {
             console.log(nombres);
             lista = '';
         };
+
+        if (msg.includes('%DOYPOSI%')) {
+            msg = msg.slice(8);
+            if (msg.includes('ULTIMO')) {
+                ruta = rutaultimo;
+            } else if (msg.includes('PRIMERO')) {
+                ruta = rutaprimero;
+            } else if (msg.includes('DIFERENCIA')) {
+                ruta = rutadiferencia;
+            } else {
+                ruta = ruta;
+            };
+
+            let buscanuevopuntos = msg.indexOf('%PUNPUN%');
+            let buscanuevonombre = msg.indexOf('%GANGAN%');
+            let nuevopuntos = parseInt(msg.slice(buscanuevopuntos + 8, buscanuevonombre));
+            let nuevonombre = msg.slice(buscanuevonombre + 8);
+            console.log(nuevopuntos + '<-->' + ultimopuntos[numaula]);
+            for (var bnp = 0; bnp < ultimopuntos[numaula].length; bnp++) {
+                if (nuevopuntos > ultimopuntos[numaula][bnp]) {
+                    ultimopuntos[numaula].splice(bnp, 0, nuevopuntos);
+                    ultimonombre[numaula].splice(bnp, 0, nuevonombre);
+                    bnp = ultimopuntos[numaula].length;
+                } else {
+                    if (bnp == ultimopuntos[numaula].length) {
+                        ultimopuntos[numaula].splice(bnp, 0, nuevopuntos);
+                        ultimonombre[numaula].splice(bnp, 0, nuevonombre);
+                    };
+                };
+            };
+            ultimopuntos[numaula] = ultimopuntos[numaula].slice(0, 10);
+            ultimonombre[numaula] = ultimonombre[numaula].slice(0, 10);
+            fs.open(ruta, 'w+', (err, fd) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    //si tienes ya el fd (file descriptor), usémoslo 
+                    texto = '%PUNPUN%';
+                    texto = texto.concat(ultimopuntos[numaula].toString());
+                    texto = texto.concat('%GANGAN%');
+                    texto = texto.concat(ultimonombre[numaula].toString());
+                    fs.appendFile(fd, texto, function (err) {
+                        if (err) throw err;
+                        //de nuevo, usemos el fd para cerrar el fichero abierto
+                        fs.close(fd, function (err) {
+                            if (err) throw err;
+                            console.log('It\'s saved!');
+                        });
+                    });
+                };
+            });
+
+            socket.emit('chat', '%RECORD%' + ultimonombre[numaula] + '%TOSTOS%' + ultimopuntos[numaula]);
+        };
+
+        if (msg.includes('%PIDOPOSI%')) {
+            socket.emit('chat', '%RECORD%' + ultimonombre[numaula] + '%TOSTOS%' + ultimopuntos[numaula]);
+        };
         
         socket.broadcast.to(adondereenvio).emit('chat', msg);
 
         if (msg.includes('GANADOR')) {
-            //nombres[numaula] = [];
-            //console.log('se borraron nombres[~' + numaula + '~] por ganador y quedo: ' + nombres);
-            //sumador[numaula] = [];
-            //sumador[numaula].push(1);
             maximo[numaula] = 12;
             libres[numaula] = true;
             console.log('aula antes: ' + nombreaula);
-            //for (var lu = 0; lu < libres.length; lu++) {
-            //    if (libres[lu] == true && conectados[lu] > 0) {
-            //        libres[numaula] = false
-            //    } else { 
-            //        libres[numaula] = true
-            //    };
-            //};
             for (var li = 0; li < libres.length; li++) {
                 if (libres[li] == true) {
                     nombreaula = 'aula' + li;
                     li = libres.length;
                 };
             };
-            console.log('aula despues: ' + nombreaula);
-            console.log('maximo[' + numaula + '] = ' + maximo[numaula]);
+            
         };
+
+        if (msg.includes('FORMATO')) { 
+            if (msg.includes('ULTI')) {
+                ruta = rutaultimo;
+            } else if (msg.includes('PRIM')) {
+                ruta = rutaprimero;
+            } else if (msg.includes('DIFE')) {
+                ruta = rutadiferencia;
+            } else {
+                ruta = ruta;
+            };
+            fs.readFile(ruta, 'utf8', (error, datos) => {
+                if (error) throw error;
+                ultimorecord[numaula] = datos;
+                console.log("El contenido es: " + ultimorecord[numaula] + '[' + numaula + ']');
+                if (ultimorecord[numaula].includes('%PUNPUN%') && ultimorecord[numaula].includes('%GANGAN%')) {
+                    let buscapuntos = ultimorecord[numaula].indexOf('%PUNPUN%');
+                    let buscanombre = ultimorecord[numaula].indexOf('%GANGAN%');
+                    let interpuntos = ultimorecord[numaula].slice(buscapuntos + 8, buscanombre);
+                    let internombre = ultimorecord[numaula].slice(buscanombre + 8);
+                    ultimonombre[numaula] = internombre.split(',');
+                    ultimopuntos[numaula] = interpuntos.split(',');
+                    console.log('si incluye ' + ultimopuntos[numaula] + '<--->' + ultimonombre[numaula]);
+                } else {
+                    ultimopuntos[numaula] = [];
+                    ultimopuntos[numaula].push(0);
+                    ultimonombre[numaula] = [];
+                    ultimonombre[numaula].push('');
+                };
+                console.log(ultimopuntos[numaula] + '<---->' + ultimonombre[numaula])
+            });
+            
+        };
+
 
         if (msg.includes('MAXIMO')) {
             let quitar = msg.split(' ');
@@ -217,6 +301,11 @@ io.on('connection', (socket) => {
             console.log('numero aula:' + numaula);
             libres[numaula] = false;
             if (conectados[numaula + 1] == null) { numaula++ };
+            if (ultimopuntos[numaula] == null) {
+                ultimopuntos.push([]);
+                ultimonombre.push([]);
+                ultimorecord.push('');
+            };
             if (conectados[numaula] == null) { conectados.push(0) };
             if (maximo[numaula] == null) { maximo.push(12) };
             if (nombres[numaula] == null) { nombres.push([]) };
@@ -249,6 +338,11 @@ io.on('connection', (socket) => {
 
     if (conectados[numaula] == 12) {
         let proximo = numaula + 1;
+        if (ultimopuntos[proximo] == null) {
+            ultimopuntos.push([]);
+            ultimonombre.push([]);
+            ultimorecord.push('');
+        };
         if (conectados[proximo] == null) { conectados.push(0) };
         if (maximo[proximo] == null) { maximo.push(12) };
         if (nombres[proximo] == null) { nombres.push([]) };
